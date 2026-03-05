@@ -10,9 +10,9 @@ EXTERNAL_VENDOR := $(BR2_EXTERNAL)/../br-ext-chip-$(OPENIPC_SOC_VENDOR)
 OPENIPC_KERNEL := $(OPENIPC_SOC_VENDOR)-$(OPENIPC_SOC_FAMILY)
 OPENIPC_TOOLCHAIN := toolchain/toolchain.$(OPENIPC_KERNEL)
 
-OPENIPC_REPO_OWNER = $(shell git -C "$(TOPDIR)" remote get-url origin 2>/dev/null | sed -n 's|.*/\([^/]*\)/.*|\1|p' || echo "OpenIPC")
-OPENIPC_TOOLCHAIN_OWNER = $(if $(shell curl -s -I "https://github.com/$(OPENIPC_REPO_OWNER)/firmware/releases/download/$(OPENIPC_TOOLCHAIN).tgz" | grep 404),OpenIPC,$(OPENIPC_REPO_OWNER))
-OPENIPC_KERNEL_OWNER = $(if $(shell curl -s -I "https://github.com/$(OPENIPC_REPO_OWNER)/openipc-linux/tree/$(OPENIPC_KERNEL)" | grep 404),OpenIPC,$(OPENIPC_REPO_OWNER))
+OPENIPC_REPO_OWNER := $(shell git remote get-url origin 2>/dev/null | awk -F'[/:]' '{print $$(NF-1)}' || echo "OpenIPC")
+OPENIPC_TOOLCHAIN_OWNER := $(if $(shell curl -s -I "https://github.com/$(OPENIPC_REPO_OWNER)/firmware/releases/download/$(OPENIPC_TOOLCHAIN).tgz" | grep 404),OpenIPC,$(OPENIPC_REPO_OWNER))
+OPENIPC_KERNEL_OWNER := $(if $(shell curl -s -I "https://github.com/$(OPENIPC_REPO_OWNER)/openipc-linux/tree/$(OPENIPC_KERNEL)" | grep 404),OpenIPC,$(OPENIPC_REPO_OWNER))
 
 include $(sort $(wildcard $(BR2_EXTERNAL)/package/*/*.mk))
 include $(sort $(wildcard $(BR2_EXTERNAL)/package/legacy/*/*.mk))
